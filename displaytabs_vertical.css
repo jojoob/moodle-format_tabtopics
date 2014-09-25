@@ -1,0 +1,20 @@
+/* The border under tabs */
+.yui3-skin-sam .yui3-tabview-list {
+    float: left;
+    width: 150px;
+    margin-top:-1px;
+}
+
+/*The tab content background color*/
+.yui3-skin-sam .yui3-tabview-panel {
+    margin-left: 152px;
+}
+
+.yui3-skin-sam .yui3-tab {
+    margin-right: 0;
+}
+
+.yui3-skin-sam .yui3-tab,
+.yui3-skin-sam .yui3-tab-content {
+    display: block;
+}

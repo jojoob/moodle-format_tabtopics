@@ -209,6 +209,14 @@ class format_tabtopics extends format_base {
                     'default' => 1,
                     'type' => PARAM_INT,
                 ),
+                'tabdisplay_vertical' => array(
+                    'label' => new lang_string('tabtopics_tabdisplay_vertical', 'format_tabtopics'),
+                    'help' => 'tabtopics_tabdisplay_vertical',
+                    'element_type' => 'advcheckbox',
+                    'default' => 0,
+                    'element_attributes' => array('', array('group' => 1), array(0, 1)),
+                    'type' => PARAM_INT,
+                ),
             );
         }
         if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
@@ -261,6 +269,13 @@ class format_tabtopics extends format_base {
                         'label' => new lang_string('tabtopics_remember_last_tab_session', 'format_tabtopics'),
                         'help' => 'tabtopics_remember_last_tab_session',
                         'element_type' => 'selectyesno',
+                        'type' => PARAM_INT,
+                    ),
+                    'tabdisplay_vertical' => array(
+                        'label' => new lang_string('tabtopics_tabdisplay_vertical', 'format_tabtopics'),
+                        'help' => 'tabtopics_tabdisplay_vertical',
+                        'element_type' => 'advcheckbox',
+                        'element_attributes' => array('', array(), array(0, 1)),
                         'type' => PARAM_INT,
                     ),
                 )
@@ -326,6 +341,36 @@ class format_tabtopics extends format_base {
         if (!$option)
             return false;
 
+
+        return $option->value == 1 ? true : false;
+    }
+
+    /**
+     * Returns whether the tabs for the current course should display vertical or not.
+     * 
+     * Defaults to false if setting doesn't exist.
+     * 
+     * @global type $DB
+     * @return boolean
+     */
+    public function is_tabdisplay_vertical() {
+        global $DB;
+
+        //get course id
+        $courseid = $this->get_courseid();
+
+        //course id is zero id course doesn't exist - shouldn't happen
+        if ($courseid == 0) {
+            return false;
+        }
+
+        //get option
+        $option = $DB->get_record('course_format_options', array('courseid' => $courseid, 'name' => 'tabdisplay_vertical'));
+
+        //if this value never existed, then we assume false
+        if (!$option) {
+            return false;
+        }
 
         return $option->value == 1 ? true : false;
     }

@@ -37,6 +37,7 @@ $tabtopicsrenderer = $PAGE->get_renderer('format_tabtopics');
 $corerenderer = $PAGE->get_renderer('core', 'course');
 $isZeroTab = course_get_format($course)->is_section_zero_tab();
 $is_remember_last_tab_session = course_get_format($course)->is_remember_last_tab_session();
+$is_tabdisplay_vertical = course_get_format($course)->is_tabdisplay_vertical();
 
 $topic = optional_param('topic', -1, PARAM_INT);
 
@@ -60,6 +61,15 @@ if (!$PAGE->user_is_editing())
 /* ]]> */
 </style>
 ';
+    if ($is_tabdisplay_vertical) {
+        echo '
+<style type="text/css" media="screen">
+/* <![CDATA[ */
+@import url("' . $CFG->wwwroot . '/course/format/tabtopics/displaytabs_vertical.css");
+/* ]]> */
+</style>
+';
+    }
     echo '
     <!--[if IE]>
     <div id = "maincontainer" style="display:">
