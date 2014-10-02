@@ -18,3 +18,7 @@
 .yui3-skin-sam .yui3-tab-content {
     display: block;
 }
+
+.yui3-tab-panel .content .section li.activity {
+	clear: none;
+}
