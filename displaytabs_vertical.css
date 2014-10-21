@@ -1,24 +1,25 @@
-/* The border under tabs */
-.yui3-skin-sam .yui3-tabview-list {
-    float: left;
-    width: 150px;
-    margin-top:-1px;
-}
-
-/*The tab content background color*/
-.yui3-skin-sam .yui3-tabview-panel {
-    margin-left: 152px;
-}
-
+/* Tabs */
 .yui3-skin-sam .yui3-tab {
-    margin-right: 0;
+    display: block;
+    margin: 0;
 }
 
-.yui3-skin-sam .yui3-tab,
-.yui3-skin-sam .yui3-tab-content {
+.yui3-tab-content {
     display: block;
 }
 
-.yui3-tab-panel .content .section li.activity {
-	clear: none;
+@media screen and (min-width: 760px) {
+	/* Tabs */
+	.yui3-tabview-list {
+		float: left;
+		width: 150px;
+	}
+	/* Content Panel */
+	.yui3-tabview-panel {
+		margin-left: 152px;
+	}
+	/* activity element */
+	.yui3-tab-panel .content .section li.activity {
+		clear: none;
+	}
 }
