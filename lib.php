@@ -444,7 +444,27 @@ class format_tabtopics extends format_base {
         //print_object($thissection);
         
         if (!$showsection) {
-            return false;
+            global $DB;
+
+            //get course id
+            $courseid = $this->get_courseid();
+
+            //course id is zero id course doesn't exist - shouldn't happen
+            if ($courseid == 0) {
+                return false;
+            }
+
+            //get option
+            $option = $DB->get_record('course_format_options', array('courseid' => $courseid, 'name' => 'hiddensections'));
+
+            //if this value never existed, then we assume false
+            if (!$option) {
+                return false;
+            }
+
+            return $option->value == 1 ? false : true;
+
+            // return false;
         }
 
         return true;
