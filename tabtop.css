@@ -58,3 +58,15 @@ ul.sectionul li#sectiontd-0
 {
     list-style-type: none;
 }
+
+@media screen and (max-width: 760px) {
+    /* Tabs */
+    .yui3-skin-sam .yui3-tab {
+        display: block;
+        margin: 0;
+    }
+
+    .yui3-tab-content {
+        display: block;
+    }
+}
