@@ -450,4 +450,13 @@ class format_tabtopics extends format_base {
         return true;
     }
 
+    /**
+     * Whether this format allows to delete sections
+     *
+     * @param int|stdClass|section_info $section
+     * @return bool
+     */
+    public function can_delete_section($section) {
+        return true;
+    }
 }
