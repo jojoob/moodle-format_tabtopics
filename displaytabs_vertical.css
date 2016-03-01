@@ -12,11 +12,11 @@
 	/* Tabs */
 	.yui3-tabview-list {
 		float: left;
-		width: 150px;
+		width: 200px;
 	}
 	/* Content Panel */
 	.yui3-tabview-panel {
-		margin-left: 152px;
+		margin-left: 202px;
 	}
 	/* activity element */
 	.yui3-tab-panel .content .section li.activity {
