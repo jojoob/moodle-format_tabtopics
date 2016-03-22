@@ -80,7 +80,7 @@ class format_tabtopics extends format_base {
                     $usercoursedisplay = COURSE_DISPLAY_SINGLEPAGE;
                 }
             } else {
-                $usercoursedisplay = $course->coursedisplay;
+                $usercoursedisplay = COURSE_DISPLAY_SINGLEPAGE;
             }
             if ($sectionno != 0 && $usercoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
                 $url->param('section', $sectionno);
@@ -190,10 +190,6 @@ class format_tabtopics extends format_base {
                     'default' => $courseconfig->hiddensections,
                     'type' => PARAM_INT,
                 ),
-                'coursedisplay' => array(
-                    'default' => $courseconfig->coursedisplay,
-                    'type' => PARAM_INT,
-                ),
                 'isZeroTab' => array(
                     'label' => new lang_string('tabtopics_zero_as_tab', 'format_tabtopics'),
                     'help' => 'tabtopics_zero_as_tab',
@@ -219,7 +215,7 @@ class format_tabtopics extends format_base {
                 ),
             );
         }
-        if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
+        if ($foreditform) {
             $courseconfig = get_config('moodlecourse');
             $max = $courseconfig->maxsections;
             if (!isset($max) || !is_numeric($max)) {
@@ -247,38 +243,6 @@ class format_tabtopics extends format_base {
                         )
                     ),
                 ),
-                'coursedisplay' => array(
-                    'label' => new lang_string('coursedisplay'),
-                    'element_type' => 'select',
-                    'element_attributes' => array(
-                        array(
-                            COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
-                            COURSE_DISPLAY_MULTIPAGE => new lang_string('coursedisplay_multi')
-                        )
-                    ),
-                    'help' => 'coursedisplay',
-                    'help_component' => 'moodle',
-                    'isZeroTab' => array(
-                        'label' => new lang_string('tabtopics_zero_as_tab', 'format_tabtopics'),
-                        'help' => 'tabtopics_remember_last_tab_session',
-                        'element_type' => 'advcheckbox',
-                        'element_attributes' => array('', array(), array(0, 1)),
-                        'type' => PARAM_INT,
-                    ),
-                    'remember_last_tab_session' => array(
-                        'label' => new lang_string('tabtopics_remember_last_tab_session', 'format_tabtopics'),
-                        'help' => 'tabtopics_remember_last_tab_session',
-                        'element_type' => 'selectyesno',
-                        'type' => PARAM_INT,
-                    ),
-                    'tabdisplay_vertical' => array(
-                        'label' => new lang_string('tabtopics_tabdisplay_vertical', 'format_tabtopics'),
-                        'help' => 'tabtopics_tabdisplay_vertical',
-                        'element_type' => 'advcheckbox',
-                        'element_attributes' => array('', array(), array(0, 1)),
-                        'type' => PARAM_INT,
-                    ),
-                )
             );
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
