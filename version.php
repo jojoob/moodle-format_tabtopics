@@ -29,4 +29,4 @@ $plugin->version = 2015102803;
 $plugin->requires = 2013051400; // moodle 2.5.0
 $plugin->component = 'format_tabtopics';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'fork/2.7.3 (Build: 2015102803)';
+$plugin->release = 'Tabtopics Course Format Plugin fork by sudile, Version 1.0.1 (Build: 2015102803)';
