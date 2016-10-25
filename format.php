@@ -50,38 +50,37 @@ $jsmodule = array(
 );
 
 //THIS IS THE CODE FOR GENERATING THE TABVIEW. ITS ONLY USED DURING NON EDITING
-if (!$PAGE->user_is_editing())
-{
+if (!$PAGE->user_is_editing()) {
     echo '<script type="text/javascript">
         var is_remember_last_tab_session = ' . ($is_remember_last_tab_session ? 'true' : 'false') . ';
     </script>';
 
     echo '
-<style type="text/css" media="screen">
-/* <![CDATA[ */
-@import url("' . $CFG->wwwroot . '/course/format/tabtopics/tabtop.css");
-/* ]]> */
-</style>
-';
+        <style type="text/css" media="screen">
+        /* <![CDATA[ */
+        @import url("' . $CFG->wwwroot . '/course/format/tabtopics/tabtop.css");
+        /* ]]> */
+        </style>
+        ';
     if ($is_tabdisplay_vertical) {
         echo '
-<style type="text/css" media="screen">
-/* <![CDATA[ */
-@import url("' . $CFG->wwwroot . '/course/format/tabtopics/displaytabs_vertical.css");
-/* ]]> */
-</style>
-';
+            <style type="text/css" media="screen">
+            /* <![CDATA[ */
+            @import url("' . $CFG->wwwroot . '/course/format/tabtopics/displaytabs_vertical.css");
+            /* ]]> */
+            </style>
+            ';
     }
     echo '
-    <!--[if IE]>
-    <div id = "maincontainer" style="display:">
-    <![endif]-->
+        <!--[if IE]>
+        <div id = "maincontainer" style="display:">
+        <![endif]-->
 
-    <!--[if !IE]> <-->
-    <div id = "maincontainer" style="display:none">
-    <!--> <![endif]-->
+        <!--[if !IE]> <-->
+        <div id = "maincontainer" style="display:none">
+        <!--> <![endif]-->
 
-    ';
+        ';
 
     $streditsummary = get_string('editsummary');
     $stradd = get_string('add');
@@ -95,15 +94,12 @@ if (!$PAGE->user_is_editing())
     $completioninfo = new completion_info($course);
     echo $completioninfo->display_help_icon();
 
-
     /// If currently moving a file then show the current clipboard
     //not too sure what this does
-    if (ismoving($course->id))
-    {
+    if (ismoving($course->id)) {
         // Note, an ordered list would confuse - "1" could be the clipboard or summary.
 
         echo "<ul class='topicstabs'>\n";
-
 
         $stractivityclipboard = strip_tags(get_string('activityclipboard', '', $USER->activitycopyname));
         $strcancel = get_string('cancel');
@@ -118,27 +114,22 @@ if (!$PAGE->user_is_editing())
     $section = 0;
     $thissection = $sections[$section];
 
-    if ($thissection->summary or $thissection->sequence)
-    {
+    if ($thissection->summary or $thissection->sequence) {
 
         echo '<ul class="sectionul"><li id="sectiontd-0" class="section main yui3-dd-drop">';
 
         echo '<div class="content">';
 
-        if (!empty($thissection->name))
-        {
+        if (!empty($thissection->name)) {
             echo $OUTPUT->heading(format_string($thissection->name, true, array('context' => $context)), 3, 'sectionname');
         }
 
         echo '<div class="summary">';
 
         //Replace get_context_instance by the class for moodle 2.6+
-        if(class_exists('context_module'))
-        {
+        if(class_exists('context_module')) {
             $coursecontext = context_course::instance($course->id);
-        }
-        else
-        {
+        } else {
             $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
         }
         $summarytext = file_rewrite_pluginfile_urls($thissection->summary, 'pluginfile.php', $coursecontext->id, 'course', 'section', $thissection->id);
@@ -150,8 +141,7 @@ if (!$PAGE->user_is_editing())
         echo '</div>';
 
         //if section is not a tab, display as a header
-        if (!$isZeroTab)
-        {
+        if (!$isZeroTab) {
             echo $corerenderer->course_section_cm_list($course, $thissection);
         }
 
@@ -172,15 +162,11 @@ if (!$PAGE->user_is_editing())
     echo '<div id="sections">'; //this is the first div that yui looks at, top node
 
     echo '<ul>'; //begining of the unordered list
-    while ($section <= $course->numsections)
-    {
+    while ($section <= $course->numsections) {
 
-        if (!empty($sections[$section]))
-        {
+        if (!empty($sections[$section])) {
             $thissection = $sections[$section];
-        }
-        else
-        {
+        } else {
             $thissection = new stdClass;
             $thissection->course = $course->id;   // Create a new section structure
             $thissection->section = $section;
@@ -197,8 +183,7 @@ if (!$PAGE->user_is_editing())
         $user_access = course_get_format($course)->check_user_access($thissection);
 
         //if don't have access AND override "not avaliable" message not on - slip tab
-        if (!$user_access && !$unaval_override)
-        {
+        if (!$user_access && !$unaval_override) {
             $section++;
             continue;
         }
@@ -207,14 +192,13 @@ if (!$PAGE->user_is_editing())
         $secname = $thissection->name;
         //this will set the name of undefined sections to a number. 
 
-        if ($secname == null)
-        {
+        if ($secname == null) {
             $secname = $secname . $num;
             $num++;
         }
 
-        if (has_capability('moodle/course:viewhiddensections', $context) || $thissection->visible || (!$thissection->visible && $unaval_override))
-        {   // Hidden for students
+        if (has_capability('moodle/course:viewhiddensections', $context) || $thissection->visible || (!$thissection->visible && $unaval_override)) {
+            // Hidden for students
             echo '<li><a href="#section-' . $section . '">' . $secname . '</a></li>'; //prints each sectio
         }
         $section++;
@@ -227,14 +211,10 @@ if (!$PAGE->user_is_editing())
     $sectionmenu = array();
     $num = $start_tab;
 
-    while ($section <= $course->numsections)
-    {
-        if (!empty($sections[$section]))
-        {
+    while ($section <= $course->numsections) {
+        if (!empty($sections[$section])) {
             $thissection = $sections[$section];
-        }
-        else
-        {
+        } else {
             $thissection = new stdClass;
             $thissection->course = $course->id;   // Create a new section structure
             $thissection->section = $section;
@@ -252,15 +232,13 @@ if (!$PAGE->user_is_editing())
         $user_access = course_get_format($course)->check_user_access($thissection);
 
         //if don't have access AND override "not avaliable" message not on - slip tab
-        if (!$user_access && !$unaval_override)
-        {
+        if (!$user_access && !$unaval_override) {
             $section++;
             continue;
         }
 
         //if user doesn't have access, but override is present - display not avaliable message
-        if (!$user_access && $unaval_override)
-        {
+        if (!$user_access && $unaval_override) {
             echo '<div id="section-' . $section . '">';
             echo '<div class="right side"></div>';
 
@@ -275,59 +253,45 @@ if (!$PAGE->user_is_editing())
 
         $showsection = (has_capability('moodle/course:viewhiddensections', $context) or $thissection->visible or !$course->hiddensections);
 
-        if (!empty($displaysection) and $displaysection != $section)
-        {  // Check this topic is visible
-            if ($showsection)
-            {
+        if (!empty($displaysection) and $displaysection != $section) {  // Check this topic is visible
+            if ($showsection) {
                 $sectionmenu[$section] = get_section_name($course, $thissection);
             }
             $section++;
             continue;
         }
 
-        if ($showsection)
-        {
+        if ($showsection) {
             $currenttext = '';
-            if (!$thissection->visible)
-            {
+            if (!$thissection->visible) {
                 $sectionstyle = ' hidden';
-            }
-            else
-            {
+            } else {
                 $sectionstyle = '';
             }
             //the default action is to set the name of each topic to null.
             $secname = $thissection->name;
             //this will set the name of undefined sections to a number. 
-            if ($secname == null)
-            {
+            if ($secname == null) {
                 $secname = $secname . $num;
                 $num++;
             }
 
-            if (has_capability('moodle/course:viewhiddensections', $context) || $thissection->visible)
-            {
+            if (has_capability('moodle/course:viewhiddensections', $context) || $thissection->visible) {
                 echo '<div id="section-' . $section . '">';
                 // Note, 'right side' is BEFORE content.
                 echo '<div class="right side">';
                 //Replace get_context_instance by the class for moodle 2.6+
-                if(class_exists('context_module'))
-                {
+                if(class_exists('context_module')) {
                     $context_check = context_course::instance($course->id);
-                }
-                else
-                {
+                } else {
                     $context_check = get_context_instance(CONTEXT_COURSE, $course->id);
                 }
                 echo '</div>';
 
                 echo '<div class="content">';
-                if (!has_capability('moodle/course:viewhiddensections', $context) and !$thissection->visible)
-                {   // Hidden for students
+                if (!has_capability('moodle/course:viewhiddensections', $context) and !$thissection->visible) {   // Hidden for students
                     echo get_string('notavailable');
-                }
-                else
-                {
+                } else {
                     $display = '';
 
                     //display section if avaliable
@@ -342,15 +306,11 @@ if (!$PAGE->user_is_editing())
                     echo $OUTPUT->heading($display, 3, 'sectionname');
 
                     echo '<div class="summary">';
-                    if ($thissection->summary)
-                    {
+                    if ($thissection->summary) {
                         //Replace get_context_instance by the class for moodle 2.6+
-                        if(class_exists('context_module'))
-                        {
+                        if(class_exists('context_module')) {
                             $coursecontext = context_course::instance($course->id);
-                        }
-                        else
-                        {
+                        } else {
                             $coursecontext = get_context_instance(CONTEXT_COURSE, $course->id);
                         }
                         $summarytext = file_rewrite_pluginfile_urls($thissection->summary, 'pluginfile.php', $coursecontext->id, 'course', 'section', $thissection->id);
@@ -358,23 +318,17 @@ if (!$PAGE->user_is_editing())
                         $summaryformatoptions->noclean = true;
                         $summaryformatoptions->overflowdiv = true;
                         echo format_text($summarytext, $thissection->summaryformat, $summaryformatoptions);
-                    }
-                    else
-                    {
+                    } else {
                         echo '&nbsp;';
                     }
 
                     //Replace get_context_instance by the class for moodle 2.6+
-                    if(class_exists('context_module'))
-                    {
+                    if(class_exists('context_module')) {
                         $context_check = context_course::instance($course->id);
-                    }
-                    else
-                    {
+                    } else {
                         $context_check = get_context_instance(CONTEXT_COURSE, $course->id);
                     }
                     echo '</div>';
-
 
                     echo $corerenderer->course_section_cm_list($course, $section);
 
@@ -396,12 +350,9 @@ if (!$PAGE->user_is_editing())
     echo '</div>';
 
     //Replace get_context_instance by the class for moodle 2.6+
-    if(class_exists('context_module'))
-    {
+    if(class_exists('context_module')) {
         $context_check = context_course::instance($course->id);
-    }
-    else
-    {
+    } else {
         $context_check = get_context_instance(CONTEXT_COURSE, $course->id);
     }
 
@@ -409,27 +360,21 @@ if (!$PAGE->user_is_editing())
 
     $PAGE->requires->js_init_call('M.tabtopics.init', array($course->id, $isZeroTab), false, $jsmodule);
 
-    if (!empty($sectionmenu))
-    {
+    if (!empty($sectionmenu)) {
         $select = new single_select(new moodle_url('/course/view.php', array('id' => $course->id)), 'topic', $sectionmenu);
         $select->label = get_string('jumpto');
         $select->class = 'jumpmenu';
         $select->formid = 'sectionmenu';
         echo $OUTPUT->render($select);
     }
-}
-//this is the editing window
-else
-{
+} else {
+    //this is the editing window
     // If Moodle 2.3 or more Generate the sections like the topics
     $renderer = $PAGE->get_renderer('format_tabtopics');
 
-    if (!empty($displaysection))
-    {
+    if (!empty($displaysection)) {
         $renderer->print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection);
-    }
-    else
-    {
+    } else {
         $renderer->print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused);
     }
 
