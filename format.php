@@ -90,17 +90,6 @@ if (!$PAGE->user_is_editing())
     $strtopic = get_string('topic');
     $strgroups = get_string('groups');
     $strgroupmy = get_string('groupmy');
-    $editing = $PAGE->user_is_editing();
-
-    if ($editing)
-    {
-        $strtopichide = get_string('hidetopicfromothers');
-        $strtopicshow = get_string('showtopicfromothers');
-        $strmarkthistopic = get_string('markthistopic');
-        $strmarkedthistopic = get_string('markedthistopic');
-        $strmoveup = get_string('moveup');
-        $strmovedown = get_string('movedown');
-    }
 
     // Print the Your progress icon if the track completion is enabled
     $completioninfo = new completion_info($course);
@@ -129,7 +118,7 @@ if (!$PAGE->user_is_editing())
     $section = 0;
     $thissection = $sections[$section];
 
-    if ($thissection->summary or $thissection->sequence or $PAGE->user_is_editing())
+    if ($thissection->summary or $thissection->sequence)
     {
 
         echo '<ul class="sectionul"><li id="sectiontd-0" class="section main yui3-dd-drop">';
@@ -330,39 +319,6 @@ if (!$PAGE->user_is_editing())
                 {
                     $context_check = get_context_instance(CONTEXT_COURSE, $course->id);
                 }
-                if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context_check))
-                {
-                    if ($course->marker == $section)
-                    {  // Show the "light globe" on/off
-                        echo '<a href="view.php?id=' . $course->id . '&amp;marker=0&amp;sesskey=' . sesskey() . '#section-' . $section . '" title="' . $strmarkedthistopic . '">' . '<img src="' . $OUTPUT->pix_url('i/marked') . '" alt="' . $strmarkedthistopic . '" /></a><br />';
-                    }
-                    else
-                    {
-                        echo '<a href="view.php?id=' . $course->id . '&amp;marker=' . $section . '&amp;sesskey=' . sesskey() . '#section-' . $section . '" title="' . $strmarkthistopic . '">' . '<img src="' . $OUTPUT->pix_url('i/marker') . '" alt="' . $strmarkthistopic . '" /></a><br />';
-                    }
-
-                    if ($thissection->visible)
-                    {   // Show the hide/show eye
-                        echo '<a href="view.php?id=' . $course->id . '&amp;hide=' . $section . '&amp;sesskey=' . sesskey() . '#section-' . $section . '" title="' . $strtopichide . '">' .
-                        '<img src="' . $OUTPUT->pix_url('i/hide') . '" class="icon hide" alt="' . $strtopichide . '" /></a><br />';
-                    }
-                    else
-                    {
-                        echo '<a href="view.php?id=' . $course->id . '&amp;show=' . $section . '&amp;sesskey=' . sesskey() . '#section-' . $section . '" title="' . $strtopicshow . '">' .
-                        '<img src="' . $OUTPUT->pix_url('i/show') . '" class="icon hide" alt="' . $strtopicshow . '" /></a><br />';
-                    }
-                    if ($section > 1)
-                    {   // Add a arrow to move section up
-                        echo '<a href="view.php?id=' . $course->id . '&amp;random=' . rand(1, 10000) . '&amp;section=' . $section . '&amp;move=-1&amp;sesskey=' . sesskey() . '#section-' . ($section - 1) . '" title="' . $strmoveup . '">' .
-                        '<img src="' . $OUTPUT->pix_url('t/up') . '" class="icon up" alt="' . $strmoveup . '" /></a><br />';
-                    }
-
-                    if ($section < $course->numsections)
-                    {   // Add a arrow to move section down
-                        echo '<a href="view.php?id=' . $course->id . '&amp;random=' . rand(1, 10000) . '&amp;section=' . $section . '&amp;move=1&amp;sesskey=' . sesskey() . '#section-' . ($section + 1) . '" title="' . $strmovedown . '">' .
-                        '<img src="' . $OUTPUT->pix_url('t/down') . '" class="icon down" alt="' . $strmovedown . '" /></a><br />';
-                    }
-                }
                 echo '</div>';
 
                 echo '<div class="content">';
@@ -417,21 +373,12 @@ if (!$PAGE->user_is_editing())
                     {
                         $context_check = get_context_instance(CONTEXT_COURSE, $course->id);
                     }
-                    if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context_check))
-                    {
-                        echo ' <a title="' . $streditsummary . '" href="editsection.php?id=' . $thissection->id . '">' .
-                        '<img src="' . $OUTPUT->pix_url('t/edit') . '" class="icon edit" alt="' . $streditsummary . '" /></a><br /><br />';
-                    }
                     echo '</div>';
 
 
                     echo $corerenderer->course_section_cm_list($course, $section);
 
                     echo '<br />';
-                    if ($PAGE->user_is_editing())
-                    {
-                        echo $corerenderer->course_section_cm_list($course, $section);
-                    }
                 }
 
                 //echo a conditional message if avaliable
@@ -456,34 +403,6 @@ if (!$PAGE->user_is_editing())
     else
     {
         $context_check = get_context_instance(CONTEXT_COURSE, $course->id);
-    }
-    if (!$displaysection and $PAGE->user_is_editing() and has_capability('moodle/course:update', $context_check))
-    {
-        // print stealth sections if present
-        $modinfo = get_fast_modinfo($course);
-        foreach ($sections as $section => $thissection)
-        {
-            if (empty($modinfo->sections[$section]))
-            {
-                $section++;
-                continue;
-            }
-
-            echo '<li id="section-' . $section . '" class="section main clearfix  yui3-dd-drop orphaned hidden">';
-
-            echo '<div class="left side">';
-            echo '</div>';
-            // Note, 'right side' is BEFORE content.
-            echo '<div class="right side">';
-            echo '</div>';
-            echo '<div class="content">';
-            echo $OUTPUT->heading(get_string('orphanedactivities'), 3, 'sectionname');
-
-            echo $corerenderer->course_section_cm_list($course, $thissection);
-
-            echo '</div>';
-            echo "</li>\n";
-        }
     }
 
     echo "</ul>\n";
