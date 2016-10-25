@@ -83,12 +83,6 @@ if (!$PAGE->user_is_editing())
 
     ';
 
-    if (($marker >= 0) && has_capability('moodle/course:setcurrentsection', $context) && confirm_sesskey())
-    {
-        $course->marker = $marker;
-        $DB->set_field("course", "marker", $marker, array("id" => $course->id));
-    }
-
     $streditsummary = get_string('editsummary');
     $stradd = get_string('add');
     $stractivities = get_string('activities');
@@ -232,10 +226,7 @@ if (!$PAGE->user_is_editing())
 
         if (has_capability('moodle/course:viewhiddensections', $context) || $thissection->visible || (!$thissection->visible && $unaval_override))
         {   // Hidden for students
-            if ($course->marker == $section)
-                echo '<li id ="marker" class="markerselected"><a href="#section-' . $section . '" id = "marker" class="markerselected">' . $secname . '</a></li>';
-            else
-                echo '<li><a href="#section-' . $section . '">' . $secname . '</a></li>'; //prints each sectio
+            echo '<li><a href="#section-' . $section . '">' . $secname . '</a></li>'; //prints each sectio
         }
         $section++;
     }
@@ -307,17 +298,10 @@ if (!$PAGE->user_is_editing())
 
         if ($showsection)
         {
-            //what is course marker?
-            $currenttopic = ($course->marker == $section);
             $currenttext = '';
             if (!$thissection->visible)
             {
                 $sectionstyle = ' hidden';
-            }
-            else if ($currenttopic)
-            {
-                $sectionstyle = ' current';
-                $currenttext = get_accesshide(get_string('currenttopic', 'format_tabtopics'));
             }
             else
             {
@@ -519,7 +503,7 @@ if (!$PAGE->user_is_editing())
 else
 {
     // If Moodle 2.3 or more Generate the sections like the topics
-    $renderer = $PAGE->get_renderer('format_topics');
+    $renderer = $PAGE->get_renderer('format_tabtopics');
 
     if (!empty($displaysection))
     {
