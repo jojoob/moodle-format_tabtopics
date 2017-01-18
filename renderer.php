@@ -60,4 +60,17 @@ class format_tabtopics_renderer extends format_section_renderer_base {
     public function section_hidden($sectionno, $courseorid = NULL) {
         echo parent::section_hidden($sectionno, $courseorid);
     }
+
+    /**
+     * Generate the edit control items of a section
+     *
+     * @param stdClass $course The course entry from DB
+     * @param stdClass $section The course_section entry from DB
+     * @param bool $onsectionpage true if being printed on a section page
+     * @return array of edit control items
+     */
+    protected function section_edit_control_items($course, $section, $onsectionpage = false) {
+        $renderer = $this->page->get_renderer('format_topics');
+        return $renderer->section_edit_control_items($course, $section, $onsectionpage);
+    }
 }

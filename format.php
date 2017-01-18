@@ -199,7 +199,11 @@ if (!$PAGE->user_is_editing()) {
 
         if (has_capability('moodle/course:viewhiddensections', $context) || $thissection->visible || (!$thissection->visible && $unaval_override)) {
             // Hidden for students
-            echo '<li><a href="#section-' . $section . '">' . $secname . '</a></li>'; //prints each sectio
+            if ($course->marker == $section) {
+                echo '<li><a href="#section-' . $section . '" id="marker">' . $secname . '</a></li>';
+            } else {
+                echo '<li><a href="#section-' . $section . '">' . $secname . '</a></li>';
+            }
         }
         $section++;
     }
@@ -262,9 +266,12 @@ if (!$PAGE->user_is_editing()) {
         }
 
         if ($showsection) {
+            $currenttopic = ($course->marker == $section);
             $currenttext = '';
             if (!$thissection->visible) {
                 $sectionstyle = ' hidden';
+            } else if ($currenttopic) {
+                $sectionstyle = ' current';
             } else {
                 $sectionstyle = '';
             }
